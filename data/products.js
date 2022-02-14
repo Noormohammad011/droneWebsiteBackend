@@ -1,7 +1,7 @@
 const products = [
   {
     name: 'DJI crop spraying drones',
-    image: '/images/drone_1.jpg',
+    image: 'https://i.ibb.co/DKsYRMQ/drone-1.jpg',
     description:
       'DJI crop spraying drones Agras T30 and T10 are now available internationally.',
     brand: 'Sony',
@@ -13,7 +13,7 @@ const products = [
   },
   {
     name: 'Maritime Cargo Delivery Drones',
-    image: '/images/drone_2.jpg',
+    image: 'https://i.ibb.co/M13vG2H/drone-2.jpg',
     description:
       'The maritime cargo deliveries were completed over the course of three separate flights. The first two were completed with the VOLY 10 Series, which is capable of lifting up to 10 pounds of cargo for over 42 miles.',
     brand: 'Apple',
@@ -25,7 +25,7 @@ const products = [
   },
   {
     name: 'Wired Reports Mayhem for Amazon Drone Delivery Unit in the UK',
-    image: '/images/drone_3.jpg',
+    image: 'https://i.ibb.co/Ph2csC6/drone-3.jpg',
     description:
       'Even as Jeff Bezos touches ground after his recent space flight, Amazon’s drone delivery efforts on the British Isles could be heading for its own splashdown.',
     brand: 'Amazon',
@@ -37,7 +37,7 @@ const products = [
   },
   {
     name: 'Swoop Aero Medical Drone Delivery',
-    image: '/images/drone_4.jpg',
+    image: 'https://i.ibb.co/64HhwxP/drone-4.jpg',
     description:
       'Rural areas in Queensland, Australia will soon benefit from Swoop Aero medical drone delivery.  A new partnership between humanitarian drone delivery provider Swoop Aero, TerryWhite Chemmart, and Australia’s largest healthcare wholesaler Symbion, will trial remotely operated drone delivery of pharmaceuticals.',
     brand: 'Sony',
@@ -49,7 +49,7 @@ const products = [
   },
   {
     name: 'Drone Delivery Firm Flytrex Welcomes Thein as COO',
-    image: '/images/drone_5.jpg',
+    image: 'https://i.ibb.co/JH38hTt/drone-5.jpg',
     description:
       'A new COO is flying into the friendly corporate skies of drone delivery company Flytrex.',
     brand: 'Logitech',
@@ -61,7 +61,7 @@ const products = [
   },
   {
     name: 'Target Arm, BIB Tech Launch Drone Food Delivery Plan',
-    image: '/images/drone_6.jpg',
+    image: 'https://i.ibb.co/rvKstfp/drone-6.jpg',
     description:
       'A drone service startup is teaming up with a delivery tech company to develop a safer way to deliver food via UAS.',
     brand: 'Amazon',
