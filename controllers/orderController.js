@@ -105,14 +105,12 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
 
   if (order) {
-   
     order.orderItems.forEach(async (item) => {
       await updateStock(item.product, item.qty)
     })
 
     order.isDelivered = true
     order.deliveredAt = Date.now()
-    
 
     const updatedOrder = await order.save()
 
@@ -126,12 +124,10 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 async function updateStock(id, quantity) {
   const product = await Product.findById(id)
 
-  product.countInStock = Number(product.countInStock - quantity)
+  product.countInStock = product.countInStock - quantity
 
   await product.save({ validateBeforeSave: false })
 }
-
-
 
 // @desc    Get logged in user orders
 // @route   GET /api/orders/myorders
@@ -156,5 +152,3 @@ export {
   getOrders,
   updateOrderToDelivered,
 }
-
-
