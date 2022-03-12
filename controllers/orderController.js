@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
+import Product from '../models/productModel.js'
 import Stripe from 'stripe'
 import { v4 as uuidv4 } from 'uuid'
 const stripe = Stripe(
@@ -104,8 +105,14 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
 
   if (order) {
+   
+    order.orderItems.forEach(async (item) => {
+      await updateStock(item.product, item.qty)
+    })
+
     order.isDelivered = true
     order.deliveredAt = Date.now()
+    
 
     const updatedOrder = await order.save()
 
@@ -115,6 +122,17 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
     throw new Error('Order not found')
   }
 })
+
+async function updateStock(id, quantity) {
+  const product = await Product.findById(id)
+
+  product.countInStock = Number(product.countInStock - quantity)
+
+  await product.save({ validateBeforeSave: false })
+}
+
+
+
 // @desc    Get logged in user orders
 // @route   GET /api/orders/myorders
 // @access  Private
@@ -139,114 +157,4 @@ export {
   updateOrderToDelivered,
 }
 
-//  id: 'ch_3KT18FLv5rAyPDp011ynf8hS',
-//   object: 'charge',
-//   amount: 68999,
-//   amount_captured: 68999,
-//   amount_refunded: 0,
-//   application: null,
-//   application_fee: null,
-//   application_fee_amount: null,
-//   balance_transaction: 'txn_3KT18FLv5rAyPDp01VlqOUQM',
-//   billing_details: {
-//     address: {
-//       city: 'Inventore eaque null',
-//       country: 'Antigua and Barbuda',
-//       line1: 'Quibusdam reiciendis',
-//       line2: null,
-//       postal_code: '+1 (487) 486-5847',
-//       state: null
-//     },
-//     email: null,
-//     name: 'Clark Wilkerson',
-//     phone: null
-//   },
-//   calculated_statement_descriptor: 'Stripe',
-//   captured: true,
-//   created: 1644831967,
-//   currency: 'usd',
-//   customer: 'cus_L9JlNGESjojIh2',
-//   description: null,
-//   destination: null,
-//   dispute: null,
-//   disputed: false,
-//   failure_code: null,
-//   failure_message: null,
-//   fraud_details: {},
-//   invoice: null,
-//   livemode: false,
-//   metadata: {},
-//   on_behalf_of: null,
-//   order: null,
-//   outcome: {
-//     network_status: 'approved_by_network',
-//     reason: null,
-//     risk_level: 'normal',
-//     risk_score: 26,
-//     seller_message: 'Payment complete.',
-//     type: 'authorized'
-//   },
-//   paid: true,
-//   payment_intent: null,
-//   payment_method: 'card_1KT189Lv5rAyPDp0tA5xQrkS',
-//   payment_method_details: {
-//     card: {
-//       brand: 'visa',
-//       checks: [Object],
-//       country: 'US',
-//       exp_month: 3,
-//       exp_year: 2022,
-//       fingerprint: 'xnPOo5Pl3DjvTt8Z',
-//       funding: 'credit',
-//       installments: null,
-//       last4: '4242',
-//       network: 'visa',
-//       three_d_secure: null,
-//       wallet: null
-//     },
-//     type: 'card'
-//   },
-//   receipt_email: 'cosiqag@mailinator.com',
-//   receipt_number: null,
-//   receipt_url: 'https://pay.stripe.com/receipts/acct_1K8gdwLv5rAyPDp0/ch_3KT18FLv5rAyPDp011ynf8hS/rcpt_L9JlTD4lLtVp44raNqgUGM7YyEVlZte',
-//   refunded: false,
-//   refunds: {
-//     object: 'list',
-//     data: [],
-//     has_more: false,
-//     total_count: 0,
-//     url: '/v1/charges/ch_3KT18FLv5rAyPDp011ynf8hS/refunds'
-//   },
-//   review: null,
-//   shipping: null,
-//   source: {
-//     id: 'card_1KT189Lv5rAyPDp0tA5xQrkS',
-//     object: 'card',
-//     address_city: 'Inventore eaque null',
-//     address_country: 'Antigua and Barbuda',
-//     address_line1: 'Quibusdam reiciendis',
-//     address_line1_check: 'pass',
-//     address_line2: null,
-//     address_state: null,
-//     address_zip: '+1 (487) 486-5847',
-//     address_zip_check: 'pass',
-//     brand: 'Visa',
-//     country: 'US',
-//     customer: 'cus_L9JlNGESjojIh2',
-//     cvc_check: 'pass',
-//     dynamic_last4: null,
-//     exp_month: 3,
-//     exp_year: 2022,
-//     fingerprint: 'xnPOo5Pl3DjvTt8Z',
-//     funding: 'credit',
-//     last4: '4242',
-//     metadata: {},
-//     name: 'Clark Wilkerson',
-//     tokenization_method: null
-//   },
-//   source_transfer: null,
-//   statement_descriptor: null,
-//   statement_descriptor_suffix: null,
-//   status: 'succeeded',
-//   transfer_data: null,
-//   transfer_group: null
+
