@@ -104,11 +104,10 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
 
-  order.orderItems.forEach(async (item) => {
-    await updateStock(item.product, item.qty)
-  })
-
   if (order) {
+    order.orderItems.forEach(async (item) => {
+      await updateStock(item.product, item.qty)
+    })
     order.isDelivered = true
     order.deliveredAt = Date.now()
 
