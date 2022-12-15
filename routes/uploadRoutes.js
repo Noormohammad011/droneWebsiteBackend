@@ -2,7 +2,7 @@ import path from 'path'
 import express from 'express'
 import multer from 'multer'
 const router = express.Router()
-import sharp from 'sharp'
+
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, 'uploads/')
@@ -34,17 +34,8 @@ const upload = multer({
   },
 })
 
-router.post('/', upload.single('image'), async (req, res) => {
-  try {
-    await sharp(req.file.buffer)
-      .resize({ width: 250, height: 250 })
-      .png()
-      .toFile(__dirname + `/uploads/${req.file.originalname}`)
-    res.status(201).send('Image uploaded succesfully')
-  } catch (error) {
-    console.log(error)
-    res.status(400).send(error)
-  }
+router.post('/', upload.single('image'), (req, res) => {
+  res.send(`/${req.file.path}`)
 })
 
 export default router
