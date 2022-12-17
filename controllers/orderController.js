@@ -78,6 +78,9 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   )
 
   if (payment) {
+    order.orderItems.forEach(async (item) => {
+      await updateStock(item.product, item.qty)
+    })
     order.isPaid = true
     order.paidAt = Date.now()
     order.paymentResult = {
@@ -105,12 +108,8 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
 
   if (order) {
-    order.orderItems.forEach(async (item) => {
-      await updateStock(item.product, item.qty)
-    })
     order.isDelivered = true
     order.deliveredAt = Date.now()
-
     const updatedOrder = await order.save()
 
     res.json(updatedOrder)
